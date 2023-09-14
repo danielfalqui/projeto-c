@@ -31,13 +31,25 @@ def preprocess_user_input(user_input):
     bag_of_words = []
 
     # tokenize a entrada do usuário
+    input_word_token_1 = nltk.word_tokenize(user_input)
 
     # converta a entrada do usuário em sua palavra-raiz: stemização
+    input_word_token_2 = get_stem_words(input_word_token_1, ignore_words)
 
     # Remova duplicidades e classifique a entrada do usuário
-   
+    input_word_token_2 = sorted(list(set(input_word_token_2)))
+
+    bag = []
+    bag_of_words = []
+
     # Codificação de dados de entrada: crie a BOW para  user_input
-    
+    for word in words:
+       if word in input_word_token_2:
+        bag_of_words.append(1)
+       else:
+        bag_of_words.append(0)
+    bag.append(bag_of_words)
+
     return np.array(bag)
     
 def bot_class_prediction(user_input):
@@ -55,7 +67,7 @@ def bot_response(user_input):
    predicted_class_label =  bot_class_prediction(user_input)
  
    # extraia a classe de predicted_class_label
-   predicted_class = ""
+   predicted_class = classes[predicted_class_label]
 
    # agora que temos a tag prevista, selecione uma resposta aleatória
 
@@ -63,7 +75,7 @@ def bot_response(user_input):
     if intent['tag']==predicted_class:
        
        # selecione uma resposta aleatória do robô
-        bot_response = ""
+        bot_response = random.choice(intent['responses '])
     
         return bot_response
     
